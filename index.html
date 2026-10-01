@@ -19,29 +19,132 @@
       margin: 0;
       width: 100%;
       height: 100%;
-      background: white;
+      background: #fff;
       overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .scene {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     model-viewer {
       width: 100%;
-      height: 100%;
+      height: 72%;
       background: white;
     }
+
+    .colors {
+      display: flex;
+      gap: 14px;
+      padding: 12px 18px;
+      border-radius: 30px;
+      background: rgba(245, 245, 247, 0.9);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .color {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid white;
+      box-shadow: 0 1px 5px rgba(0,0,0,.2);
+      cursor: pointer;
+      transition: transform .2s ease;
+    }
+
+    .color:hover {
+      transform: scale(1.15);
+    }
+
+    .color.active {
+      outline: 2px solid #111;
+      outline-offset: 3px;
+    }
+
+    .black  { background: #171717; }
+    .white  { background: #f2f2ed; }
+    .blue   { background: #9eb9d6; }
+    .pink   { background: #e8b6bd; }
+    .green  { background: #a9c4b0; }
   </style>
 </head>
 
 <body>
 
-  <model-viewer
-    src="./iphone16.glb"
-    camera-controls
-    auto-rotate
-    shadow-intensity="0.15"
-    exposure="1"
-    camera-orbit="0deg 75deg 2.5m"
-    field-of-view="35deg">
-  </model-viewer>
+  <div class="scene">
+
+    <model-viewer
+      id="phone"
+      src="./iphone16.glb"
+      camera-controls
+      auto-rotate
+      rotation-per-second="20deg"
+      shadow-intensity="0.15"
+      exposure="1"
+      camera-orbit="0deg 75deg 3.2m"
+      field-of-view="32deg">
+    </model-viewer>
+
+    <div class="colors">
+      <button class="color black active" data-color="#171717"></button>
+      <button class="color white" data-color="#f2f2ed"></button>
+      <button class="color blue" data-color="#9eb9d6"></button>
+      <button class="color pink" data-color="#e8b6bd"></button>
+      <button class="color green" data-color="#a9c4b0"></button>
+    </div>
+
+  </div>
+
+  <script>
+    const phone = document.querySelector("#phone");
+    const buttons = document.querySelectorAll(".color");
+
+    phone.addEventListener("load", () => {
+
+      // Ищем материал корпуса
+      const materials = phone.model.materials;
+
+      console.log("Материалы модели:", materials.map(m => m.name));
+
+      const bodyMaterial = materials.find(material => {
+        const name = material.name.toLowerCase();
+
+        return (
+          name.includes("body") ||
+          name.includes("case") ||
+          name.includes("chassis") ||
+          name.includes("frame")
+        );
+      });
+
+      if (!bodyMaterial) {
+        console.warn("Материал корпуса не найден.");
+        return;
+      }
+
+      buttons.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+          const color = button.dataset.color;
+
+          bodyMaterial.pbrMetallicRoughness.setBaseColorFactor(color);
+
+          buttons.forEach(b => b.classList.remove("active"));
+          button.classList.add("active");
+        });
+
+      });
+
+    });
+  </script>
 
 </body>
 </html>
