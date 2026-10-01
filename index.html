@@ -2,25 +2,30 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
 
   <title>iPhone 16</title>
 
-  <script type="module"
+  <script
+    type="module"
     src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
   </script>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     html,
     body {
-      margin: 0;
       width: 100%;
       height: 100%;
+      margin: 0;
       overflow: hidden;
       background: #ffffff;
     }
@@ -34,16 +39,24 @@
         sans-serif;
     }
 
+
     /* =========================
        SCENE
        ========================= */
 
     .scene {
       position: relative;
+
       width: 100%;
       height: 100%;
+
       background: #ffffff;
     }
+
+
+    /* =========================
+       IPHONE
+       ========================= */
 
     model-viewer {
       position: absolute;
@@ -88,26 +101,31 @@
 
 
     /* =========================
-       COLOR PANEL
+       COLOR PICKER
        ========================= */
 
     .colors {
+
       position: absolute;
 
       left: 50%;
-      bottom: calc(24px + env(safe-area-inset-bottom));
+      bottom: calc(
+        24px + env(safe-area-inset-bottom)
+      );
 
       transform: translateX(-50%);
 
       display: flex;
       align-items: center;
+
       gap: 15px;
 
       padding: 13px 17px;
 
       background: rgba(245, 245, 247, 0.94);
 
-      border: 1px solid rgba(0, 0, 0, 0.06);
+      border:
+        1px solid rgba(0, 0, 0, 0.06);
 
       border-radius: 999px;
 
@@ -128,6 +146,7 @@
        ========================= */
 
     .color {
+
       appearance: none;
       -webkit-appearance: none;
 
@@ -140,10 +159,10 @@
 
       border-radius: 50%;
 
+      cursor: pointer;
+
       box-shadow:
         0 1px 5px rgba(0, 0, 0, 0.22);
-
-      cursor: pointer;
 
       transition:
         transform 0.18s ease,
@@ -163,27 +182,32 @@
 
 
     /* =========================
-       COLORS
+       REAL IPHONE 16 COLORS
        ========================= */
 
+    /* Black */
     .black {
-      background: #171717;
+      background: #1d1d1f;
     }
 
+    /* White */
     .white {
-      background: #eeeae2;
+      background: #f5f5f0;
     }
 
-    .blue {
-      background: #9bb7d2;
-    }
-
+    /* Pink */
     .pink {
-      background: #e6b5bd;
+      background: #e8b4bd;
     }
 
-    .green {
-      background: #a9c2b0;
+    /* Teal */
+    .teal {
+      background: #8fb5b2;
+    }
+
+    /* Ultramarine */
+    .ultramarine {
+      background: #5366c8;
     }
 
 
@@ -198,19 +222,21 @@
       }
 
       .colors {
-        bottom: calc(16px + env(safe-area-inset-bottom));
+        bottom: calc(
+          16px + env(safe-area-inset-bottom)
+        );
+
+        gap: 13px;
+
+        padding: 11px 15px;
       }
 
       .color {
         width: 25px;
         height: 25px;
       }
-
-      .colors {
-        gap: 13px;
-        padding: 11px 15px;
-      }
     }
+
   </style>
 </head>
 
@@ -219,7 +245,10 @@
 
   <main class="scene">
 
-    <!-- 3D MODEL -->
+
+    <!-- =====================
+         3D MODEL
+         ===================== -->
 
     <model-viewer
       id="phone"
@@ -227,7 +256,6 @@
       src="./iphone16.glb"
 
       camera-controls
-      touch-action="pan-y"
 
       auto-rotate
       rotation-per-second="18deg"
@@ -240,47 +268,52 @@
       camera-orbit="0deg 75deg 3.4m"
       field-of-view="32deg"
 
-      interaction-prompt="none">
+      interaction-prompt="none"
+    >
     </model-viewer>
 
 
-    <!-- CENTER ORIENTATION DOT -->
+    <!-- =====================
+         CENTER POINT
+         ===================== -->
 
     <div class="center-dot"></div>
 
 
-    <!-- COLOR SELECTOR -->
+    <!-- =====================
+         COLOR SELECTOR
+         ===================== -->
 
     <div class="colors">
 
       <button
         class="color black active"
-        data-color="#171717"
+        data-color="#1d1d1f"
         aria-label="Black">
       </button>
 
       <button
         class="color white"
-        data-color="#eeeae2"
+        data-color="#f5f5f0"
         aria-label="White">
       </button>
 
       <button
-        class="color blue"
-        data-color="#9bb7d2"
-        aria-label="Blue">
-      </button>
-
-      <button
         class="color pink"
-        data-color="#e6b5bd"
+        data-color="#e8b4bd"
         aria-label="Pink">
       </button>
 
       <button
-        class="color green"
-        data-color="#a9c2b0"
-        aria-label="Green">
+        class="color teal"
+        data-color="#8fb5b2"
+        aria-label="Teal">
+      </button>
+
+      <button
+        class="color ultramarine"
+        data-color="#5366c8"
+        aria-label="Ultramarine">
       </button>
 
     </div>
@@ -290,102 +323,161 @@
 
   <script>
 
-    const phone = document.getElementById("phone");
-    const buttons = document.querySelectorAll(".color");
+    const phone =
+      document.getElementById("phone");
+
+    const buttons =
+      document.querySelectorAll(".color");
 
 
     /*
-      Материалы корпуса из твоего GLB.
+     * =====================================
+     * MATERIALS FROM YOUR iphone16.glb
+     * =====================================
+     *
+     *  iUpcKVJxvpQRARa
+     *  → rear glass / back panel
+     *
+     *  JtcYDcQFnoAKzhN_001
+     *  → aluminum frame
+     *
+     * These two are changed together.
+     */
 
-      Они меняются одновременно,
-      поэтому рамка и задняя часть
-      остаются одного цвета.
-    */
 
     const BODY_MATERIALS = [
-      "JtcYDcQFnoAKzhN_001",
-      "mZFGzfzmscnEfhF"
+
+      "iUpcKVJxvpQRARa",
+
+      "JtcYDcQFnoAKzhN_001"
+
     ];
 
 
     /*
-      HEX → RGBA
-    */
+     * =====================================
+     * HEX → RGBA
+     * =====================================
+     */
 
     function hexToRGBA(hex) {
 
       hex = hex.replace("#", "");
 
       return [
-        parseInt(hex.substring(0, 2), 16) / 255,
-        parseInt(hex.substring(2, 4), 16) / 255,
-        parseInt(hex.substring(4, 6), 16) / 255,
+
+        parseInt(
+          hex.substring(0, 2),
+          16
+        ) / 255,
+
+        parseInt(
+          hex.substring(2, 4),
+          16
+        ) / 255,
+
+        parseInt(
+          hex.substring(4, 6),
+          16
+        ) / 255,
+
         1
+
       ];
 
     }
 
 
     /*
-      Когда GLB загрузился
-    */
+     * =====================================
+     * MODEL LOADED
+     * =====================================
+     */
 
-    phone.addEventListener("load", () => {
+    phone.addEventListener(
+      "load",
+      () => {
 
-      const materials = phone.model.materials;
-
-
-      /*
-        Находим только материалы корпуса
-      */
-
-      const bodyMaterials = materials.filter(material =>
-        BODY_MATERIALS.includes(material.name)
-      );
+        const materials =
+          phone.model.materials;
 
 
-      /*
-        Клик по цвету
-      */
+        /*
+         * Find the actual materials
+         * inside the GLB.
+         */
 
-      buttons.forEach(button => {
-
-        button.addEventListener("click", () => {
-
-          const color = hexToRGBA(
-            button.dataset.color
+        const bodyMaterials =
+          materials.filter(
+            material =>
+              BODY_MATERIALS.includes(
+                material.name
+              )
           );
 
 
-          /*
-            Меняем цвет корпуса
-          */
+        /*
+         * =================================
+         * COLOR BUTTONS
+         * =================================
+         */
 
-          bodyMaterials.forEach(material => {
+        buttons.forEach(button => {
 
-            material.pbrMetallicRoughness
-              .setBaseColorFactor(color);
+          button.addEventListener(
+            "click",
+            () => {
 
-          });
+              const color =
+                hexToRGBA(
+                  button.dataset.color
+                );
 
 
-          /*
-            Переключаем активную точку
-          */
+              /*
+               * Change rear glass
+               * + aluminum frame.
+               */
 
-          buttons.forEach(item => {
-            item.classList.remove("active");
-          });
+              bodyMaterials.forEach(
+                material => {
 
-          button.classList.add("active");
+                  material
+                    .pbrMetallicRoughness
+                    .setBaseColorFactor(
+                      color
+                    );
+
+                }
+              );
+
+
+              /*
+               * Active indicator
+               */
+
+              buttons.forEach(
+                item =>
+                  item.classList.remove(
+                    "active"
+                  )
+              );
+
+
+              button.classList.add(
+                "active"
+              );
+
+            }
+          );
 
         });
 
-      });
-
-    });
+      }
+    );
 
   </script>
 
 </body>
 </html>
+
