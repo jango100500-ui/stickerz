@@ -2,7 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <title>iPhone 16</title>
 
@@ -15,49 +16,118 @@
       box-sizing: border-box;
     }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #fff;
+      background: #ffffff;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Helvetica Neue",
+        sans-serif;
     }
 
+    /* =========================
+       SCENE
+       ========================= */
+
     .scene {
+      position: relative;
       width: 100%;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      background: #ffffff;
     }
 
     model-viewer {
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
       width: 100%;
-      height: 70%;
+      height: 78%;
+
+      transform: translate(-50%, -50%);
+
       background: transparent;
+
+      --poster-color: transparent;
     }
 
+
+    /* =========================
+       CENTER DOT
+       ========================= */
+
+    .center-dot {
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      width: 6px;
+      height: 6px;
+
+      transform: translate(-50%, -50%);
+
+      border-radius: 50%;
+
+      background: rgba(0, 0, 0, 0.18);
+
+      pointer-events: none;
+
+      z-index: 5;
+    }
+
+
+    /* =========================
+       COLOR PANEL
+       ========================= */
+
     .colors {
+      position: absolute;
+
+      left: 50%;
+      bottom: calc(24px + env(safe-area-inset-bottom));
+
+      transform: translateX(-50%);
+
       display: flex;
-      gap: 16px;
+      align-items: center;
+      gap: 15px;
+
       padding: 13px 17px;
 
-      background: rgba(245, 245, 247, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background: rgba(245, 245, 247, 0.94);
+
+      border: 1px solid rgba(0, 0, 0, 0.06);
 
       border-radius: 999px;
 
       box-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.08);
+        0 10px 35px rgba(0, 0, 0, 0.10);
+
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+
+      z-index: 20;
+
+      -webkit-tap-highlight-color: transparent;
     }
 
-    button {
+
+    /* =========================
+       COLOR BUTTON
+       ========================= */
+
+    .color {
       appearance: none;
       -webkit-appearance: none;
 
@@ -65,27 +135,36 @@
       height: 28px;
 
       padding: 0;
-      border: 2px solid white;
+
+      border: 2px solid #ffffff;
+
       border-radius: 50%;
 
       box-shadow:
-        0 1px 4px rgba(0, 0, 0, 0.25);
+        0 1px 5px rgba(0, 0, 0, 0.22);
 
       cursor: pointer;
 
       transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+
+      -webkit-tap-highlight-color: transparent;
     }
 
-    button:active {
-      transform: scale(0.9);
+    .color:active {
+      transform: scale(0.88);
     }
 
-    button.active {
-      outline: 2px solid #111;
+    .color.active {
+      outline: 2px solid #111111;
       outline-offset: 3px;
     }
+
+
+    /* =========================
+       COLORS
+       ========================= */
 
     .black {
       background: #171717;
@@ -106,29 +185,71 @@
     .green {
       background: #a9c2b0;
     }
+
+
+    /* =========================
+       SMALL SCREENS
+       ========================= */
+
+    @media (max-height: 650px) {
+
+      model-viewer {
+        height: 74%;
+      }
+
+      .colors {
+        bottom: calc(16px + env(safe-area-inset-bottom));
+      }
+
+      .color {
+        width: 25px;
+        height: 25px;
+      }
+
+      .colors {
+        gap: 13px;
+        padding: 11px 15px;
+      }
+    }
   </style>
 </head>
 
+
 <body>
 
-  <div class="scene">
+  <main class="scene">
+
+    <!-- 3D MODEL -->
 
     <model-viewer
       id="phone"
+
       src="./iphone16.glb"
 
       camera-controls
+      touch-action="pan-y"
+
       auto-rotate
       rotation-per-second="18deg"
 
       shadow-intensity="0.18"
+      shadow-softness="0.8"
+
       exposure="1"
 
       camera-orbit="0deg 75deg 3.4m"
-      field-of-view="32deg">
+      field-of-view="32deg"
 
+      interaction-prompt="none">
     </model-viewer>
 
+
+    <!-- CENTER ORIENTATION DOT -->
+
+    <div class="center-dot"></div>
+
+
+    <!-- COLOR SELECTOR -->
 
     <div class="colors">
 
@@ -164,22 +285,21 @@
 
     </div>
 
-  </div>
+  </main>
 
 
   <script>
 
-    const phone = document.querySelector("#phone");
+    const phone = document.getElementById("phone");
     const buttons = document.querySelectorAll(".color");
 
+
     /*
-      Материалы именно из твоего iphone16.glb:
+      Материалы корпуса из твоего GLB.
 
-      JtcYDcQFnoAKzhN_001
-      → основной корпус / рамка
-
-      mZFGzfzmscnEfhF
-      → задняя часть корпуса
+      Они меняются одновременно,
+      поэтому рамка и задняя часть
+      остаются одного цвета.
     */
 
     const BODY_MATERIALS = [
@@ -188,7 +308,11 @@
     ];
 
 
-    function hexToRGB(hex) {
+    /*
+      HEX → RGBA
+    */
+
+    function hexToRGBA(hex) {
 
       hex = hex.replace("#", "");
 
@@ -202,21 +326,40 @@
     }
 
 
+    /*
+      Когда GLB загрузился
+    */
+
     phone.addEventListener("load", () => {
 
       const materials = phone.model.materials;
+
+
+      /*
+        Находим только материалы корпуса
+      */
 
       const bodyMaterials = materials.filter(material =>
         BODY_MATERIALS.includes(material.name)
       );
 
 
+      /*
+        Клик по цвету
+      */
+
       buttons.forEach(button => {
 
         button.addEventListener("click", () => {
 
-          const color = hexToRGB(button.dataset.color);
+          const color = hexToRGBA(
+            button.dataset.color
+          );
 
+
+          /*
+            Меняем цвет корпуса
+          */
 
           bodyMaterials.forEach(material => {
 
@@ -226,9 +369,13 @@
           });
 
 
-          buttons.forEach(b =>
-            b.classList.remove("active")
-          );
+          /*
+            Переключаем активную точку
+          */
+
+          buttons.forEach(item => {
+            item.classList.remove("active");
+          });
 
           button.classList.add("active");
 
